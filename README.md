@@ -142,8 +142,3 @@ This extension has **no backend, no server, and no analytics**. It requests only
 
 No frameworks. No build tools. No dependencies.
 
----
-
-## 📄 License
-
-MIT — do whatever you want with it.
