@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Focus Mode — Settings</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #0f0f0f;
+      color: #e8e8e8;
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      padding: 48px 16px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 520px;
+    }
+
+    .header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .header-icon {
+      width: 36px;
+      height: 36px;
+      background: #ff4e45;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      flex-shrink: 0;
+    }
+
+    h1 {
+      font-size: 22px;
+      font-weight: 700;
+      color: #fff;
+    }
+
+    h1 span {
+      display: block;
+      font-size: 13px;
+      font-weight: 400;
+      color: #888;
+      margin-top: 2px;
+    }
+
+    .card {
+      background: #1a1a1a;
+      border: 1px solid #2a2a2a;
+      border-radius: 12px;
+      overflow: hidden;
+      margin-bottom: 20px;
+    }
+
+    .card-title {
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: #666;
+      padding: 16px 20px 10px;
+    }
+
+    .setting-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 14px 20px;
+      border-top: 1px solid #232323;
+      transition: background 0.15s;
+    }
+
+    .setting-row:first-of-type { border-top: none; }
+
+    .setting-row:hover { background: #202020; }
+
+    .setting-info { flex: 1; }
+
+    .setting-label {
+      font-size: 14px;
+      font-weight: 500;
+      color: #e8e8e8;
+      display: block;
+      margin-bottom: 3px;
+    }
+
+    .setting-desc {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.4;
+    }
+
+    /* ── Dropdown ── */
+    .select-wrap { flex-shrink: 0; }
+
+    .setting-select {
+      appearance: none;
+      -webkit-appearance: none;
+      background: #252525 url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath fill='%23888' d='M6 8L0 0h12z'/%3E%3C/svg%3E") no-repeat right 10px center;
+      border: 1px solid #3a3a3a;
+      border-radius: 6px;
+      color: #e8e8e8;
+      font-size: 13px;
+      padding: 6px 32px 6px 10px;
+      cursor: pointer;
+      transition: border-color 0.15s;
+    }
+
+    .setting-select:hover  { border-color: #555; }
+    .setting-select:focus  { outline: 2px solid #ff4e45; outline-offset: 2px; border-color: transparent; }
+    .setting-select option { background: #1a1a1a; }
+
+    /* ── Toggle Switch ── */
+    .toggle-wrap { flex-shrink: 0; padding-top: 2px; }
+
+    .toggle-input {
+      position: absolute;
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-track {
+      display: block;
+      width: 44px;
+      height: 24px;
+      background: #333;
+      border-radius: 999px;
+      position: relative;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .toggle-track::after {
+      content: '';
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      width: 18px;
+      height: 18px;
+      background: #fff;
+      border-radius: 50%;
+      transition: transform 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+
+    .toggle-input:checked + .toggle-track {
+      background: #ff4e45;
+    }
+
+    .toggle-input:checked + .toggle-track::after {
+      transform: translateX(20px);
+    }
+
+    .toggle-input:focus-visible + .toggle-track {
+      outline: 2px solid #ff4e45;
+      outline-offset: 2px;
+    }
+
+    /* ── Status toast ── */
+    #status-toast {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 16px;
+      border-radius: 8px;
+      background: #1e3a28;
+      border: 1px solid #2a5438;
+      color: #4ade80;
+      font-size: 13px;
+      font-weight: 500;
+      opacity: 0;
+      transform: translateY(4px);
+      transition: opacity 0.2s, transform 0.2s;
+      pointer-events: none;
+    }
+
+    #status-toast.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .footer-note {
+      margin-top: 24px;
+      font-size: 12px;
+      color: #555;
+      text-align: center;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+
+    <div class="header">
+      <div class="header-icon">🎯</div>
+      <h1>
+        Focus Mode Settings
+        <span>Changes apply immediately when Study Mode is active</span>
+      </h1>
+    </div>
+
+    <div class="card">
+      <div class="card-title">What to Hide</div>
+
+      <!-- Sidebar -->
+      <div class="setting-row">
+        <div class="setting-info">
+          <span class="setting-label">Sidebar &amp; Suggested Videos</span>
+          <span class="setting-desc">Hides the "Up Next" panel and all recommendations on the watch page.</span>
+        </div>
+        <div class="toggle-wrap">
+          <input type="checkbox" class="toggle-input" id="hideSidebar" />
+          <label class="toggle-track" for="hideSidebar" aria-label="Toggle hide sidebar"></label>
+        </div>
+      </div>
+
+      <!-- Shorts -->
+      <div class="setting-row">
+        <div class="setting-info">
+          <span class="setting-label">Shorts Shelves</span>
+          <span class="setting-desc">Removes all Shorts rows from search results, home, and channel pages.</span>
+        </div>
+        <div class="toggle-wrap">
+          <input type="checkbox" class="toggle-input" id="hideShorts" />
+          <label class="toggle-track" for="hideShorts" aria-label="Toggle hide Shorts"></label>
+        </div>
+      </div>
+
+      <!-- Comments -->
+      <div class="setting-row">
+        <div class="setting-info">
+          <span class="setting-label">Comments Section</span>
+          <span class="setting-desc">Collapses the entire comments section below the video player.</span>
+        </div>
+        <div class="toggle-wrap">
+          <input type="checkbox" class="toggle-input" id="hideComments" />
+          <label class="toggle-track" for="hideComments" aria-label="Toggle hide comments"></label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Break Rhythm -->
+    <div class="card">
+      <div class="card-title">Break Rhythm</div>
+
+      <div class="setting-row">
+        <div class="setting-info">
+          <span class="setting-label">Remind me to take a break every…</span>
+          <span class="setting-desc">A modal will appear at each interval while Study Mode is active.</span>
+        </div>
+        <div class="select-wrap">
+          <select class="setting-select" id="breakInterval" aria-label="Break interval">
+            <option value="25">25 mins — Pomodoro</option>
+            <option value="40">40 mins — Deep Work</option>
+            <option value="60">60 mins</option>
+            <option value="0">No Breaks</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <div id="status-toast">✓ &nbsp;Settings saved automatically</div>
+    <p class="footer-note">
+      Settings are saved to your local browser only.<br />
+      No data ever leaves your device.
+    </p>
+
+  </div>
+  <script src="options.js"></script>
+</body>
+</html>

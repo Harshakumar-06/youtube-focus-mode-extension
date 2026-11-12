@@ -1,0 +1,22 @@
+/* Hide the entire right sidebar (Up Next / Suggestions) */
+html[data-study-mode="true"] #secondary,
+html[data-study-mode="true"] ytd-watch-next-secondary-results-renderer {
+  display: none !important;
+}
+
+/* Hide the Home feed */
+html[data-study-mode="true"] ytd-browse[page-subtype="home"] {
+  display: none !important;
+}
+
+/* Hide Shorts shelves anywhere they appear */
+html[data-study-mode="true"] ytd-reel-shelf-renderer,
+html[data-study-mode="true"] ytd-rich-shelf-renderer[is-shorts] {
+  display: none !important;
+}
+
+/* Center the video player since the sidebar is gone */
+html[data-study-mode="true"] #primary {
+  max-width: 100% !important;
+  margin: 0 auto !important;
+}

@@ -1,0 +1,29 @@
+/* ── Sidebar / Suggested Videos ────────────────────────────────────────── */
+html[data-hide-sidebar="true"] #secondary,
+html[data-hide-sidebar="true"] ytd-watch-next-secondary-results-renderer {
+  display: none !important;
+}
+
+/* Expand the primary panel to fill the freed space */
+html[data-hide-sidebar="true"] #primary {
+  max-width: 100% !important;
+  margin: 0 auto !important;
+}
+
+/* ── Home Feed ──────────────────────────────────────────────────────────── */
+/* Always hidden when study mode is on (master guard) */
+html[data-study-mode="true"] ytd-browse[page-subtype="home"] {
+  display: none !important;
+}
+
+/* ── Shorts Shelves ─────────────────────────────────────────────────────── */
+html[data-hide-shorts="true"] ytd-reel-shelf-renderer,
+html[data-hide-shorts="true"] ytd-rich-shelf-renderer[is-shorts] {
+  display: none !important;
+}
+
+/* ── Comments Section ───────────────────────────────────────────────────── */
+html[data-hide-comments="true"] #comments {
+  display: none !important;
+}
+

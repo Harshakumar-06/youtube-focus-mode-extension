@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<body style="width: 250px; font-family: sans-serif; padding: 15px; margin: 0; background: #fff;">
+  <h3 style="margin-top: 0;">Study Mode</h3>
+  <input type="text" id="goal" placeholder="What's your goal?" style="width: 90%; margin-bottom: 15px; padding: 8px;">
+  <button id="toggleBtn" style="width: 100%; padding: 12px; font-weight: bold; border: none; border-radius: 4px; cursor: pointer;"></button>
+
+  <!-- Math challenge — hidden until user tries to turn off Study Mode -->
+  <div id="mathChallenge" style="display:none; margin-top: 14px; padding: 12px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 6px;">
+    <p id="mathQuestion" style="margin: 0 0 8px; font-size: 13px; font-weight: bold; color: #333;"></p>
+    <input type="number" id="mathAnswer" placeholder="Your answer" style="width: 100%; padding: 6px; box-sizing: border-box; border: 1px solid #ccc; border-radius: 4px; font-size: 14px;">
+    <div style="display: flex; gap: 8px; margin-top: 8px;">
+      <button id="mathSubmit" style="flex:1; padding: 8px; background: #ff4e45; color: white; border: none; border-radius: 4px; font-weight: bold; cursor: pointer;">Submit</button>
+      <button id="mathCancel" style="flex:1; padding: 8px; background: #eee; color: #333; border: none; border-radius: 4px; cursor: pointer;">Cancel</button>
+    </div>
+    <p id="mathError" style="display:none; margin: 8px 0 0; color: #c0392b; font-size: 12px; font-weight: bold;">❌ Incorrect. Stay focused!</p>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
